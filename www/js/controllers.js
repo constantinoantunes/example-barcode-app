@@ -21,8 +21,11 @@ angular.module('starter.controllers', [])
       );
     }.bind(this);
   })
-  .controller('HistoryCtrl', function (ScanHistory) {
-    this.codeList = ScanHistory.findAll();
+  .controller('HistoryCtrl', function ($scope, ScanHistory) {
+    this.scanList = [];
+    $scope.$on('$ionicView.enter', function () {
+      this.scanList = ScanHistory.findAll();
+    }.bind(this));
   });
 
 //
