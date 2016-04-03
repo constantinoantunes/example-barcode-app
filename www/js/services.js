@@ -1,50 +1,49 @@
 angular.module('starter.services', [])
-
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'img/ben.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'img/max.png'
-  }, {
-    id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'img/adam.jpg'
-  }, {
-    id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'img/perry.png'
-  }, {
-    id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'img/mike.png'
-  }];
-
-  return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
-        }
-      }
-      return null;
+.service('ScanHistory', function ($window, Scan) {
+  this.add = function (code) {
+    var item = Scan(code);
+    var list = this.findAll();
+    list.push(item);
+    var data = JSON.stringify(list);
+    $window.localStorage.setItem('scanHistory', data);
+    return item;
+  };
+  this.findAll = function () {
+    var output = [];
+    var storedData = $window.localStorage.getItem('scanHistory');
+    if (storedData !== null) {
+      itemList = JSON.parse(storedData);
+      output = itemList.map(function (item) {
+        return Scan(item);
+      });
     }
+    return output;
+  };
+  this.findLast = function () {
+    var list = this.findAll();
+    if (list.length === 0) {
+      throw 'No codes read yet!';
+    }
+    return list[list.length-1];
+  };
+})
+.factory('Scan', function () {
+  return function (data) {
+    var item = {
+      code: undefined,
+      created_on: new Date()
+    }
+    if (typeof data === 'string') {
+      item.code = data;
+    } else {
+      if (typeof data.code === 'undefined') {
+        throw 'ScanFactory: A code must be specified';
+      }
+      item.code = data.code;
+      if (typeof data.created_on === 'string') {
+        data.created_on = new Date(data.created_on);
+      }
+    }
+    return item;
   };
 });

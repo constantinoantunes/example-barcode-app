@@ -1,11 +1,18 @@
 angular.module('starter.controllers', [])
-  .controller('HomeCtrl', function () {
-    this.lastCode = undefined;
+  .controller('HomeCtrl', function ($window, $timeout, ScanHistory) {
+    try {
+      this.lastScan = ScanHistory.findLast();
+    } catch (e) {
+      this.lastScan = undefined;
+    }
     this.scan = function () {
-      cordova.plugins.barcodeScanner.scan(
+      $window.cordova.plugins.barcodeScanner.scan(
         function (result) {
           if (! result.cancelled) {
-            this.lastCode = result.text
+            ScanHistory.add(result.text);
+            $timeout(function () {
+              this.lastScan = ScanHistory.findLast();
+            }.bind(this));
           }
         }.bind(this), 
         function (error) {
@@ -14,12 +21,8 @@ angular.module('starter.controllers', [])
       );
     }.bind(this);
   })
-  .controller('HistoryCtrl', function () {
-    this.codeList = [
-      {code: 'teste 1', created_on: new Date('2016-04-03 10:27')},
-      {code: 'teste 2', created_on: new Date('2016-04-03 10:45')},
-      {code: 'teste 3', created_on: new Date('2016-04-03 10:57')}
-    ];
+  .controller('HistoryCtrl', function (ScanHistory) {
+    this.codeList = ScanHistory.findAll();
   });
 
 //
