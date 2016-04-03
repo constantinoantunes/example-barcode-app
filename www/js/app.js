@@ -28,7 +28,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/',
     templateUrl: 'templates/home.html',
     controller: 'HomeCtrl as vm'
-  });
+  })
+  .state('history', {
+      url: '/history',
+      templateUrl: 'templates/history.html',
+      controller: 'HistoryCtrl as vm'
+    });
   $urlRouterProvider.otherwise('/');
 });
 

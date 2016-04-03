@@ -13,6 +13,13 @@ angular.module('starter.controllers', [])
         }
       );
     }.bind(this);
+  })
+  .controller('HistoryCtrl', function () {
+    this.codeList = [
+      {code: 'teste 1', created_on: new Date('2016-04-03 10:27')},
+      {code: 'teste 2', created_on: new Date('2016-04-03 10:45')},
+      {code: 'teste 3', created_on: new Date('2016-04-03 10:57')}
+    ];
   });
 
 //
