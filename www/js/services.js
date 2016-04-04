@@ -12,7 +12,7 @@ angular.module('starter.services', [])
     var output = [];
     var storedData = $window.localStorage.getItem('scanHistory');
     if (storedData !== null) {
-      itemList = JSON.parse(storedData);
+      var itemList = JSON.parse(storedData);
       output = itemList.map(function (item) {
         return Scan(item);
       });
@@ -41,7 +41,7 @@ angular.module('starter.services', [])
       }
       item.code = data.code;
       if (typeof data.created_on === 'string') {
-        data.created_on = new Date(data.created_on);
+        item.created_on = new Date(data.created_on);
       }
     }
     return item;
