@@ -1,9 +1,11 @@
 angular.module('starter.services', [])
 .service('ScanHistory', function ($window, Scan) {
+  var maxHistoryLength = 100;
   this.add = function (code) {
     var item = Scan(code);
     var list = this.findAll();
     list.push(item);
+    list = list.slice(list.length - maxHistoryLength);
     var data = JSON.stringify(list);
     $window.localStorage.setItem('scanHistory', data);
     return item;
