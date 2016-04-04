@@ -24,7 +24,7 @@ angular.module('starter.controllers', [])
   .controller('HistoryCtrl', function ($scope, ScanHistory) {
     this.scanList = [];
     $scope.$on('$ionicView.enter', function () {
-      this.scanList = ScanHistory.findAll();
+      this.scanList = ScanHistory.findAll().reverse();
     }.bind(this));
   });
 
