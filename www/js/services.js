@@ -55,11 +55,12 @@ angular.module('starter.services', [])
       if (typeof data.created_on === 'string') {
         item.created_on = new Date(data.created_on);
       }
-      if (typeof data.id === 'undefined') {
-        item.id = Guid.newGuid();
-      } else {
+      if (typeof data.id === 'string') {
         item.id = data.id;
       }
+    }
+    if (item.id === undefined) {
+      item.id = Guid.newGuid();
     }
     return item;
   };
