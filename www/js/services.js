@@ -28,10 +28,20 @@ angular.module('starter.services', [])
     }
     return list[list.length-1];
   };
+  this.fetchById = function (id) {
+    var result = this.findAll().find(function (item) {
+      return (item.id === id);
+    });
+    if (result === undefined) {
+      throw "Unknown scan '"+id+"'!";
+    }
+    return result;
+  }
 })
-.factory('Scan', function () {
+.factory('Scan', function (Guid) {
   return function (data) {
     var item = {
+      id: undefined,
       code: undefined,
       created_on: new Date()
     }
@@ -45,7 +55,13 @@ angular.module('starter.services', [])
       if (typeof data.created_on === 'string') {
         item.created_on = new Date(data.created_on);
       }
+      if (typeof data.id === 'undefined') {
+        item.id = Guid.newGuid();
+      } else {
+        item.id = data.id;
+      }
     }
     return item;
   };
-});
+})
+;
