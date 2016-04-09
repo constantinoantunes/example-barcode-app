@@ -39,6 +39,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       templateUrl: 'templates/detail.html',
       controller: 'DetailCtrl as vm'
     })
+  .state('about', {
+      url: '/about',
+      templateUrl: 'templates/about.html'
+    })
   ;
   $urlRouterProvider.otherwise('/');
 });
