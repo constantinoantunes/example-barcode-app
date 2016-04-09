@@ -36,7 +36,7 @@ angular.module('starter.services', [])
       throw "Unknown scan '"+id+"'!";
     }
     return result;
-  }
+  };
 })
 .factory('Scan', function (Guid) {
   return function (data) {
