@@ -27,11 +27,18 @@ angular.module('starter.controllers', [])
       this.scanList = ScanHistory.findAll().reverse();
     }.bind(this));
   })
-  .controller('DetailCtrl', function ($state, ScanHistory) {
+  .controller('DetailCtrl', function ($state, $ionicHistory, ScanHistory) {
     try {
       this.scan = ScanHistory.fetchById($state.params.id);
     } catch (e) {
       this.scan = undefined;
     }
+    this.goBack = function () {
+      if ($ionicHistory.backView() === null) {
+        $state.go('history');
+      } else {
+        $ionicHistory.goBack();
+      }
+    };
   })
 ;
